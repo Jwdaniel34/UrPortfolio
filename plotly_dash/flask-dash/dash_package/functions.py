@@ -1,16 +1,3 @@
-def sayhello():
-    return "HELLO"
-
-def twox(x):
-    return x*2
-
-def half(x):
-    return x/2
-
-def title():
-    return "graph title!!!"
-
-
 # import pandas as pd
 # import pickle
 
@@ -60,15 +47,15 @@ def title():
 #     result = mnb.predict(processed)[0]
 
 # version 1
-    # if result == 0:
-    #     return 'Category: Art'
-    #
-    # if result == 1:
-    #     return 'Category: Programming'
-    #
-    # else:
-    #     return 'Classifier Down'
+#     if result == 0:
+#         return 'Category: Art'
+    
+#     if result == 1:
+#         return 'Category: Programming'
+    
+#     else:
+#         return 'Classifier Down'
 
 
-# version 2
-    return result
+# # version 2
+#     return result
