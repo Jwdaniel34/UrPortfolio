@@ -3,16 +3,19 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import numpy as np
+import dash
 import glob
+from dash_package import app
+from dash_package.functions import *
 import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 from dash.dependencies import Input, Output, State
 import chart_studio
 
-companies = pd.read_csv('/Users/flatironschool/UrPortfolio/companies.csv')
+companies = pd.read_csv('/Users/flatironschool/UrPortfolio/csv_files/companies.csv')
 companies = companies.rename(columns={"Quarter end": "date"})
-predictions = pd.read_csv('/Users/flatironschool/UrPortfolio/recommendation_system/prediction_gv.csv')
+predictions = pd.read_csv('/Users/flatironschool/UrPortfolio/recommendation_system/rec_csvs/prediction_gv.csv')
 symbols = companies['symbol'].unique()
 symbols = symbols.tolist()
 comp = companies['company'].unique()
@@ -20,14 +23,14 @@ comp = comp.tolist()
 values = companies['sector'].value_counts(normalize = False)
 
 
-app = dash.Dash()
-app.config.suppress_callback_exceptions = True
+# app = dash.Dash()
+# app.config.suppress_callback_exceptions = True
 
 app.layout = html.Div([
             
         html.Div([
                 html.H2(children = 'UrStockPortfolio'),
-                html.Img(src="assets/stock_icons.png"),
+                html.Img(src="static/stock_icons.png"),
                 ], className = "banner",),
 
          html.Div([
