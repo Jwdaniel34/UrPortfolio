@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-dash_timeseries.csv
-=======
->>>>>>> refs/remotes/origin/master
+*.csv
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
