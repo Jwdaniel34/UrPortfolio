@@ -24,7 +24,7 @@ predictions = pd.read_csv('rec_csvs/prediction_gv.csv')
 growth_stocks = growth_stocks.rename({'0':'symbol'}, axis = 1)
 value_stocks = value_stocks.rename({'0':'symbol'}, axis = 1)
 cluster_rec = cluster_rec.drop(columns= 'Unnamed: 0')
-
+matching = cluster_rec.set_index('symbol')
 value_choices = value_stocks.set_index('symbol')
 value_choices = value_choices.merge(matching, right_index = True, left_index = True)
 # value_choices = value_choices.drop(columns ='Unnamed: 0')
@@ -52,6 +52,7 @@ portfolio = user_input_choices()
 recommender = processing_recommender(portfolio, cluster_rec)
 
 app.layout = html.Div([
+    html.H4("How long would you like to Invest", style={'textAlign': 'center'})
     dcc.Input(id='time-horizon', value='initial value', type='text'),
     html.Div(id='time-div'),
 ])
@@ -63,14 +64,8 @@ app.layout = html.Div([
             [Input(component_id='time-horizon', component_property='value')])
 def time_horizon(value):
     time_investing  = value
-    # while True:
-    #     try:
-    #         time_investing = int(time_investing)
-    #         if type(time_investing) == int:
-    #             break
-    #     except ValueError:
-    #         print('Please use digits')
     return time_investing
+
 
 
 def user_input_choices():
@@ -88,194 +83,192 @@ def user_input_choices():
         else:
             print("invalid input try again\n ------")
             risk_tolerance = input(" 1- Conservative\n 2- Moderate\n 3- Risky \n Please choose from the following: ").lower()
-    risks = risk
-    return risks
-
-
-
-def conservative():
-    counter = 0
-    counter_2 = 0
-    value_stocks = []
-    growth_stocks = []
-    portfolio = []
-    Y = []
-    top_picks_value = top_20_conservative_value['symbol'].tolist()
-    top_picks_growth = top_20_conservative_growth['symbol'].tolist()
-    full_stock_value = [top_20_conservative_growth, top_20_conservative_value]
-    full_stock_value = pd.concat(full_stock_value)
-    print('------------------------')
-    print(top_picks_value)
-    while counter < 3:
-        user_input = input('Please choose 3 from the top 20 Value Stocks: ').upper()
-        if user_input in top_picks_value:
-            counter += 1
-            value_stocks.append(user_input)
-            portfolio.append(user_input)
-        else:
-            print('Stock Not in List')
-            print('------------------------')
-            print(top_picks_value)
-            continue
-    print('------------------------')
-    print(top_picks_growth)
-    while counter_2 < 7:
-        user_input_2 = input('Please choose 7 from the top 20 Growth Stocks: ').upper()
-        if user_input_2 in top_picks_growth:
-            counter_2 += 1
-            growth_stocks.append(user_input_2)
-            portfolio.append(user_input_2)
-        else:
-            print('Stock Not in List')
-            print('------------------------')
-            print(top_picks_growth)
-            continue
-    
-    for tickers in portfolio:
-        df = full_stock_value[full_stock_value['symbol'] == tickers]
-        Y.append(df)
-    
-    new_port = pd.concat(Y)
-    print(new_port)
-        
-    return new_port
-
-def moderate():
-    counter = 0
-    counter_2 = 0
-    value_stocks = []
-    growth_stocks = []
-    portfolio = []
-    top_picks_value = top_20_moderate_value['symbol'].tolist()
-    top_picks_growth = top_20_moderate_growth['symbol'].tolist()
-    full_stock_value = [top_20_moderate_growth, top_20_moderate_value]
-    full_stock_value = pd.concat(full_stock_value)
-    print('------------------------')
-    print(top_picks_value)
-    while counter < 5:
-        user_input = input(f'Please choose 5 from the top 20 Value Stocks: ').upper()
-        if user_input in top_picks_value:
-            counter += 1
-            value_stocks.append(user_input)
-            portfolio.append(user_input)
-        else:
-            print('Stock Not in List')
-            print('------------------------')
-            print(top_picks_value)
-            continue
-    print('------------------------')
-    print(top_picks_growth)
-    while counter_2 < 5:
-        user_input_2 = input('Please choose 5 from the top 20 Growth Stocks: ').upper()
-        if user_input_2 in top_picks_growth:
-            counter_2 += 1
-            growth_stocks.append(user_input_2)
-            portfolio.append(user_input_2)
-        else:
-            print('Stock Not in List')
-            print('------------------------')
-            print(top_picks_growth)
-            continue
-    Y = []
-    for tickers in portfolio:
-        df = full_stock_value[full_stock_value['symbol'] == tickers]
-        Y.append(df)
-    
-    new_port = pd.concat(Y)
-    print(portfolio)
-
-    return new_port
-
-def risky():
-    counter = 0
-    counter_2 = 0
-    value_stocks = []
-    growth_stocks = []
-    portfolio = []
-    top_picks_value = top_20_risky_value['symbol'].tolist()
-    top_picks_growth = top_20_risky_growth['symbol'].tolist()
-    full_stock_value = [top_20_risky_growth, top_20_risky_value]
-    full_stock_value = pd.concat(full_stock_value)
-    print('------------------------')
-    print(top_picks_value)
-    while counter < 3:
-        user_input = input('Please choose 3 from the top 20 Value Stocks: ').upper()
-        if user_input in top_picks_value:
-            counter += 1
-            value_stocks.append(user_input)
-            portfolio.append(user_input)
-        else:
-            print('Stock Not in List')
-            print('------------------------')
-            print(top_picks_value)
-            continue
-    print('------------------------')
-    print(top_picks_growth)
-    while counter_2 < 8:
-        user_input_2 = input('Please choose 8 from the top 20 Growth Stocks: ').upper()
-        if user_input_2 in top_picks_growth:
-            counter_2 += 1
-            growth_stocks.append(user_input_2)
-            portfolio.append(user_input_2)
-        else:
-            print('Stock Not in List')
-            print('------------------------')
-            print(top_picks_growth)
-            continue
-    Y = []
-    for tickers in portfolio:
-        df = full_stock_value[full_stock_value['symbol'] == tickers]
-        Y.append(df)
-    
-    new_port = pd.concat(Y)
-        
-    return new_port   
-
-def processing_recommender(portfolio, cluster_rec):
-    cluster = portfolio
-    cluster = cluster[cluster['sharpe_ratio'] >= 0]
-    cluster = cluster.sort_values('sharpe_ratio', ascending = True)
-    rec_test = cluster_rec.drop(columns = ['symbol','company','Price','sector'])
-    rec_clust = portfolio.drop(columns = ['symbol','company','sector'])
-    pip = rec_clust.sort_values('avg_yr_returns', ascending=False)
-    pip = pip.index[0]
-    inpt_idx = pip
-    inpt = rec_test.iloc[inpt_idx]
-    scores = pd.Series(index=rec_test.index)
-    scores.iloc[inpt_idx] = -1
-    for idx, stock in rec_test.drop(index=inpt_idx).iterrows():
-        diff = 0
-        for feature in stock.index:
-            diff += (inpt.loc[feature]-stock.loc[feature])**2
-        scores.loc[idx] = diff
-    scores.sort_values()
-    scores = pd.DataFrame(scores.sort_values())
-    recommend_err = scores.merge(cluster_rec, left_index = True, right_index = True)
-    recommend_err = recommend_err.rename({0: 'RMSE'}, axis = 1)
-    testing = recommend_err.head(10)
-    return testing
-
-def monte_carlo(portfolio, time_horizon):
-    sim = pd.DataFrame()
-    iterations = 5000
-
-    for x in range(iterations):
-        pv = float(portfolio['Price'].sum()) + 6
-        expected_return = float(portfolio['avg_yr_returns'].mean())
-        volatility = float(portfolio['yr_variance'].mean())
-        time_horizon = time_horizon
-        annual_investment = pv
-        stream = []
-        for i in range(time_horizon):
-            end = round(pv * (1 + np.random.normal(expected_return,volatility)) + annual_investment,2)
-
-            stream.append(end)
-
-            pv = end
             
-        sim[x] = stream
+    risks = risk
 
-def simulator(monte_carlo, portfolio):    
+    def conservative():
+        counter = 0
+        counter_2 = 0
+        value_stocks = []
+        growth_stocks = []
+        portfolio = []
+        Y = []
+        top_picks_value = top_20_conservative_value['symbol'].tolist()
+        top_picks_growth = top_20_conservative_growth['symbol'].tolist()
+        full_stock_value = [top_20_conservative_growth, top_20_conservative_value]
+        full_stock_value = pd.concat(full_stock_value)
+        print('------------------------')
+        print(top_picks_value)
+        while counter < 3:
+            user_input = input('Please choose 3 from the top 20 Value Stocks: ').upper()
+            if user_input in top_picks_value:
+                counter += 1
+                value_stocks.append(user_input)
+                portfolio.append(user_input)
+            else:
+                print('Stock Not in List')
+                print('------------------------')
+                print(top_picks_value)
+                continue
+        print('------------------------')
+        print(top_picks_growth)
+        while counter_2 < 7:
+            user_input_2 = input('Please choose 7 from the top 20 Growth Stocks: ').upper()
+            if user_input_2 in top_picks_growth:
+                counter_2 += 1
+                growth_stocks.append(user_input_2)
+                portfolio.append(user_input_2)
+            else:
+                print('Stock Not in List')
+                print('------------------------')
+                print(top_picks_growth)
+                continue
+        
+        for tickers in portfolio:
+            df = full_stock_value[full_stock_value['symbol'] == tickers]
+            Y.append(df)
+        
+        new_port = pd.concat(Y)
+        print(new_port)
+            
+        return new_port
+
+    def moderate():
+        counter = 0
+        counter_2 = 0
+        value_stocks = []
+        growth_stocks = []
+        portfolio = []
+        top_picks_value = top_20_moderate_value['symbol'].tolist()
+        top_picks_growth = top_20_moderate_growth['symbol'].tolist()
+        full_stock_value = [top_20_moderate_growth, top_20_moderate_value]
+        full_stock_value = pd.concat(full_stock_value)
+        print('------------------------')
+        print(top_picks_value)
+        while counter < 5:
+            user_input = input(f'Please choose 5 from the top 20 Value Stocks: ').upper()
+            if user_input in top_picks_value:
+                counter += 1
+                value_stocks.append(user_input)
+                portfolio.append(user_input)
+            else:
+                print('Stock Not in List')
+                print('------------------------')
+                print(top_picks_value)
+                continue
+        print('------------------------')
+        print(top_picks_growth)
+        while counter_2 < 5:
+            user_input_2 = input('Please choose 5 from the top 20 Growth Stocks: ').upper()
+            if user_input_2 in top_picks_growth:
+                counter_2 += 1
+                growth_stocks.append(user_input_2)
+                portfolio.append(user_input_2)
+            else:
+                print('Stock Not in List')
+                print('------------------------')
+                print(top_picks_growth)
+                continue
+        Y = []
+        for tickers in portfolio:
+            df = full_stock_value[full_stock_value['symbol'] == tickers]
+            Y.append(df)
+        
+        new_port = pd.concat(Y)
+        print(portfolio)
+
+        return new_port
+
+    def risky():
+        counter = 0
+        counter_2 = 0
+        value_stocks = []
+        growth_stocks = []
+        portfolio = []
+        top_picks_value = top_20_risky_value['symbol'].tolist()
+        top_picks_growth = top_20_risky_growth['symbol'].tolist()
+        full_stock_value = [top_20_risky_growth, top_20_risky_value]
+        full_stock_value = pd.concat(full_stock_value)
+        print('------------------------')
+        print(top_picks_value)
+        while counter < 3:
+            user_input = input('Please choose 3 from the top 20 Value Stocks: ').upper()
+            if user_input in top_picks_value:
+                counter += 1
+                value_stocks.append(user_input)
+                portfolio.append(user_input)
+            else:
+                print('Stock Not in List')
+                print('------------------------')
+                print(top_picks_value)
+                continue
+        print('------------------------')
+        print(top_picks_growth)
+        while counter_2 < 8:
+            user_input_2 = input('Please choose 8 from the top 20 Growth Stocks: ').upper()
+            if user_input_2 in top_picks_growth:
+                counter_2 += 1
+                growth_stocks.append(user_input_2)
+                portfolio.append(user_input_2)
+            else:
+                print('Stock Not in List')
+                print('------------------------')
+                print(top_picks_growth)
+                continue
+        Y = []
+        for tickers in portfolio:
+            df = full_stock_value[full_stock_value['symbol'] == tickers]
+            Y.append(df)
+        
+        new_port = pd.concat(Y)
+            
+        return new_port   
+
+    def processing_recommender(portfolio, cluster_rec):
+        cluster = portfolio
+        cluster = cluster[cluster['sharpe_ratio'] >= 0]
+        cluster = cluster.sort_values('sharpe_ratio', ascending = True)
+        rec_test = cluster_rec.drop(columns = ['symbol','company','Price','sector'])
+        rec_clust = portfolio.drop(columns = ['symbol','company','sector'])
+        pip = rec_clust.sort_values('avg_yr_returns', ascending=False)
+        pip = pip.index[0]
+        inpt_idx = pip
+        inpt = rec_test.iloc[inpt_idx]
+        scores = pd.Series(index=rec_test.index)
+        scores.iloc[inpt_idx] = -1
+        for idx, stock in rec_test.drop(index=inpt_idx).iterrows():
+            diff = 0
+            for feature in stock.index:
+                diff += (inpt.loc[feature]-stock.loc[feature])**2
+            scores.loc[idx] = diff
+        scores.sort_values()
+        scores = pd.DataFrame(scores.sort_values())
+        recommend_err = scores.merge(cluster_rec, left_index = True, right_index = True)
+        recommend_err = recommend_err.rename({0: 'RMSE'}, axis = 1)
+        testing = recommend_err.head(10)
+        return testing
+
+    def monte_carlo(portfolio, time_horizon):
+        sim = pd.DataFrame()
+        iterations = 5000
+
+        for x in range(iterations):
+            pv = float(portfolio['Price'].sum()) + 6
+            expected_return = float(portfolio['avg_yr_returns'].mean())
+            volatility = float(portfolio['yr_variance'].mean())
+            time_horizon = time_horizon
+            annual_investment = pv
+            stream = []
+            for i in range(time_horizon):
+                end = round(pv * (1 + np.random.normal(expected_return,volatility)) + annual_investment,2)
+
+                stream.append(end)
+
+                pv = end
+                
+            sim[x] = stream
+
+    def simulator(monte_carlo, portfolio):    
     price_per = float(portfolio['Price'].sum()) + 6
     expected_return = float(portfolio['avg_yr_returns'].mean())
     volatility = float(portfolio['yr_variance'].mean())

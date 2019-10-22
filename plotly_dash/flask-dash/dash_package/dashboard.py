@@ -1,22 +1,12 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-<<<<<<< HEAD
-<<<<<<< HEAD
 import dash_bootstrap_components as dbc
 import pandas as pd
 import pandas_datareader.data as web
 from iexfinance.stocks import get_historical_data
 import numpy as np
 import datetime
-=======
-import pandas as pd
-import numpy as np
->>>>>>> refs/remotes/origin/master
-=======
-import pandas as pd
-import numpy as np
->>>>>>> refs/remotes/origin/master
 import dash
 import glob
 from dash_package import app
@@ -35,8 +25,6 @@ symbols = symbols.tolist()
 comp = companies['company'].unique()
 comp = comp.tolist()
 values = companies['sector'].value_counts(normalize = False)
-<<<<<<< HEAD
-<<<<<<< HEAD
 stocks_df = pd.read_csv('/Users/flatironschool/UrPortfolio/dash_setup/dash_timeseries.csv')
 stocks_df = stocks_df.drop('Unnamed: 0', axis = 1)
 stocks_df['Date'] = pd.to_datetime(stocks_df.Date, infer_datetime_format=True)
@@ -44,118 +32,69 @@ stocks_df['Date'] = pd.to_datetime(stocks_df.Date, infer_datetime_format=True)
 
 
 app.layout = html.Div([
-        
-        dbc.NavbarSimple(
-                    children=[
-                    dbc.NavItem(dbc.NavLink("Page 1", href="#")),
-                    dbc.DropdownMenu(children=[
-                    dbc.DropdownMenuItem("Page 2", href="#"),
-                                ],nav=True,
-                            in_navbar=True,),
-                    ],
-                    brand="NavbarSimple",
-                    brand_href="#",
-                    color="primary",
-                    dark=True,
-                ),
                 # Configure navbar menu
-        # html.Div([
-        #         html.H2(children = 'UrStockPortfolio'),
-        #         ], className = "banner"),
+        html.Div([
+                html.H2(children = 'UrStockPortfolio'),
+                ], className = "banner"),
+
+    dcc.Link('Investors Page', href='http://localhost:8501/'),
+    # content will be rendered in this element
+    html.Div(id='page-content'),
 
         html.H3('A Fundamental Stock application For New Investors'),
 
         html.Div(
-            [html.H1("Compare Stock Prices", style={'textAlign': 'center'}),
+            [html.H1("Compare individual Stocks Prices", style={'textAlign': 'center'}),
             dcc.Dropdown(id='my-dropdown',options= [{'label': i, 'value': j} for i,j in zip(comp,symbols)],
                 multi=True,value=['A'],style={"display": "block","margin-left": "auto","margin-right": "auto","width": "40"}),
                 dcc.Graph(id='my-graph')
                 ], className="container"),
             
         html.Hr(),
-
-        html.H4(children = "Fundamental Analysis on Sectors"),
-         html.Div([
-                    html.Div([
-=======
-=======
->>>>>>> refs/remotes/origin/master
-
-
-# app = dash.Dash()
-# app.config.suppress_callback_exceptions = True
-
-app.layout = html.Div([
-            
         html.Div([
-                html.H2(children = 'UrStockPortfolio'),
-                html.Img(src="static/stock_icons.png"),
-                ], className = "banner",),
-
+            html.H4('''
+            What Is a Sector?\n
+            A sector is an area of the economy in which businesses share the
+            same or a related product or service. It can also be thought of as an
+            industry or market that shares common operating characteristics. 
+            Dividing an economy into different sectors allows for
+            more in-depth analysis of the economy as a whole.
+            ''')
+        ]),
+        html.Div([
          html.Div([
-             html.H3(children = "A fundamental Stock application For New Investors"),
-<<<<<<< HEAD
->>>>>>> refs/remotes/origin/master
-=======
->>>>>>> refs/remotes/origin/master
                     dcc.Graph(
                             id = 'Sector Analysis',
                             figure = {
                                 'data': [go.Pie(
                                     labels = ['Services','Financial','Technology','Consumer Goods','Industrial Goods',  
-<<<<<<< HEAD
-<<<<<<< HEAD
-                                                'Basic Materials','Healthcare','Utilities'] , values=values)],
+                                                 'Basic Materials','Healthcare','Utilities'] , values=values,
+                                                 )],
                                 'layout' : go.Layout(
                                 title = 'Amount of Sectors in Dataset'),
                             })]),
 
                         html.Div([
                         dcc.Dropdown( id = 'sector fund',
-                                    options = [{'label': 'Price', 'value': 'Price'}, {'label': 'Earnings', 'value': 'Earnings'}],
+                                    options = [{'label': 'Price', 'value': 'Price'}, {'label': 'Earnings', 'value': 'Earnings'},
+                                                {'label': 'Dividend payout ratio', 'value': 'Dividend payout ratio'}],
                                     value ='Price'),
                                     html.Div(id='3')])
                                     ],style={'display': 'flex', 'justify-content': 'space-evenly'}),
                 
-                html.Hr(),
+                        html.Hr(),
 
-            html.Div([
-                    dcc.Dropdown(
-                                id = 'stats', placeholder= 'Select a stock',
-                                options = [{'label': i, 'value': j} for i,j in zip(comp,symbols)],
-                                value ='A', style={'width': '49%', 'display': 'inline-block'}),
-                            html.Div(id='1'),
-                            html.Div(id='2'),
-                                ]),
-=======
-=======
->>>>>>> refs/remotes/origin/master
-                                                'Basic Materials','Healthcare','Utilities'] , 
-                                    values=values)
-                                ],
-                                'layout' : go.Layout(
-                                title = 'Amount of Sectors in Dataset',
-                                legend=dict(x=0,y=1.0),)
-                            })],style={'width': '49%', 'display': 'inline-block'}),
-    
-                            html.Div([
-                            dcc.Dropdown(
-                                        id = 'stats',
-                                        options = [{'label': i, 'value': j} for i,j in zip(comp,symbols)],
-                                        value ='', style={'width': '49%', 'display': 'inline-block'}),
-                                    html.Div(id='1'),
-                                        ]),
-<<<<<<< HEAD
->>>>>>> refs/remotes/origin/master
-=======
->>>>>>> refs/remotes/origin/master
-                            
-                                                                
+                    html.Div([
+                        dcc.Dropdown(
+                                    id = 'stats', placeholder= 'Select a stock',
+                                    options = [{'label': i, 'value': j} for i,j in zip(comp,symbols)],
+                                    value ='A', style={'width': '49%', 'display': 'inline-block'}),
+                                html.Div(id='1'),
+                                html.Div(id='2'),
+                                    ]),
+                                                              
        
 ])
-
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 @app.callback(Output('my-graph', 'figure'),
               [Input('my-dropdown', 'value')])
@@ -220,18 +159,6 @@ def company(value):
                 ])
 
 @app.callback(Output('2', 'children'), 
-=======
-=======
->>>>>>> refs/remotes/origin/master
-app.css.append_css({
-    'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
-})
-
-@app.callback(Output('1', 'children'), 
-<<<<<<< HEAD
->>>>>>> refs/remotes/origin/master
-=======
->>>>>>> refs/remotes/origin/master
               [Input('stats', 'value')])                           
 def pe_ratio(value):
     if value is None:
@@ -239,27 +166,18 @@ def pe_ratio(value):
         raise dash.exceptions.PreventUpdate
     test = companies[companies['symbol'] == value]
     asking = value.upper()
-<<<<<<< HEAD
-<<<<<<< HEAD
     sector = test.iloc[0][2]
     company = test['company'].iloc[0]
     labels_gv = ['Growth', 'Value']
     values_gv = test['growth'].value_counts()
     data= [go.Pie(labels=labels_gv, values=values_gv, hole=.3, 
                 name= f'{asking}', hoverinfo="label+percent+name")]
-=======
-=======
->>>>>>> refs/remotes/origin/master
     company = test['company'].values[0]
     sector = test['sector'].values[0]
     labels_gv = ['Growth', 'Value']
     values_gv = test['growth'].value_counts()
     data= [go.Pie(labels=labels_gv, values=values_gv, hole=.3, 
                   name= f'{asking}', hoverinfo="label+percent+name")]
-<<<<<<< HEAD
->>>>>>> refs/remotes/origin/master
-=======
->>>>>>> refs/remotes/origin/master
 
     labels_roa = ['Growth', 'No Growth']
     values_roa = test['growth_roa'].value_counts()
@@ -269,9 +187,6 @@ def pe_ratio(value):
     labels_roe = ['Growth', 'No Growth']
     values_roe = test['growth_roe'].value_counts()
     data_2 = [go.Pie(labels=labels_roe, values=values_roe, hole=.3, name= f'{asking}')]
-
-<<<<<<< HEAD
-<<<<<<< HEAD
 
     return html.Div([
                 html.Div([                   
@@ -299,41 +214,13 @@ def pe_ratio(value):
                                                 
                                                 )})],className="six columns", style={'max-width': '500px'}),
                                                 ],style={'display': 'flex', 'justify-content': 'center'})
-=======
-=======
->>>>>>> refs/remotes/origin/master
-    return html.Div([
-                html.Div([
-                    html.H2(f'{company}'),
-                    html.H3(f'{sector} Sector'),
-                    dcc.Graph(
-                    id='pe_ratio',
-                    figure={
-                            'data': data,
-                            'layout': go.Layout(title=f'Growth - {asking} Stock P/E ratio',
-                            legend=dict(x=0,y=1.0),
-                            )})],className="six columns"),
-                html.Div([
-                    dcc.Graph(
-                        id='roa', 
-                        figure = {'data': data_1, 
-                                'layout': go.Layout(title= f"Growth Return on Assest - {asking} ",
-                                                        legend=dict(x=0,y=1.0),
-                                                        )}),
-                        html.H4( "PE Ration")],className="six columns"), 
-                html.Div([
-                    dcc.Graph(id='roe', 
-                            figure = {'data': data_2, 
-                                    'layout': go.Layout(title= f"Growth Return on Equity - {asking}",
-                                                legend=dict(x=0,y=1.0),
-                                                )})],className="six columns"),
-                                                ],style={'width': '49%', 'display': 'inline-block'})
-<<<<<<< HEAD
->>>>>>> refs/remotes/origin/master
-=======
->>>>>>> refs/remotes/origin/master
-                
 
+@app.callback(dash.dependencies.Output('page-content', 'children'),
+              [dash.dependencies.Input('url', 'pathname')])
+def display_page(pathname):
+    return html.Div([
+        html.H3('You are on page {}'.format(pathname))
+    ])
 
 if __name__ == '__main__':
     app.run_server(port = 4050)
