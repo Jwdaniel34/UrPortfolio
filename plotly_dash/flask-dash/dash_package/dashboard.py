@@ -2,12 +2,17 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 <<<<<<< HEAD
+<<<<<<< HEAD
 import dash_bootstrap_components as dbc
 import pandas as pd
 import pandas_datareader.data as web
 from iexfinance.stocks import get_historical_data
 import numpy as np
 import datetime
+=======
+import pandas as pd
+import numpy as np
+>>>>>>> refs/remotes/origin/master
 =======
 import pandas as pd
 import numpy as np
@@ -30,6 +35,7 @@ symbols = symbols.tolist()
 comp = companies['company'].unique()
 comp = comp.tolist()
 values = companies['sector'].value_counts(normalize = False)
+<<<<<<< HEAD
 <<<<<<< HEAD
 stocks_df = pd.read_csv('/Users/flatironschool/UrPortfolio/dash_setup/dash_timeseries.csv')
 stocks_df = stocks_df.drop('Unnamed: 0', axis = 1)
@@ -72,6 +78,8 @@ app.layout = html.Div([
          html.Div([
                     html.Div([
 =======
+=======
+>>>>>>> refs/remotes/origin/master
 
 
 # app = dash.Dash()
@@ -86,12 +94,16 @@ app.layout = html.Div([
 
          html.Div([
              html.H3(children = "A fundamental Stock application For New Investors"),
+<<<<<<< HEAD
+>>>>>>> refs/remotes/origin/master
+=======
 >>>>>>> refs/remotes/origin/master
                     dcc.Graph(
                             id = 'Sector Analysis',
                             figure = {
                                 'data': [go.Pie(
                                     labels = ['Services','Financial','Technology','Consumer Goods','Industrial Goods',  
+<<<<<<< HEAD
 <<<<<<< HEAD
                                                 'Basic Materials','Healthcare','Utilities'] , values=values)],
                                 'layout' : go.Layout(
@@ -116,6 +128,8 @@ app.layout = html.Div([
                             html.Div(id='2'),
                                 ]),
 =======
+=======
+>>>>>>> refs/remotes/origin/master
                                                 'Basic Materials','Healthcare','Utilities'] , 
                                     values=values)
                                 ],
@@ -131,12 +145,16 @@ app.layout = html.Div([
                                         value ='', style={'width': '49%', 'display': 'inline-block'}),
                                     html.Div(id='1'),
                                         ]),
+<<<<<<< HEAD
+>>>>>>> refs/remotes/origin/master
+=======
 >>>>>>> refs/remotes/origin/master
                             
                                                                 
        
 ])
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 @app.callback(Output('my-graph', 'figure'),
@@ -203,11 +221,16 @@ def company(value):
 
 @app.callback(Output('2', 'children'), 
 =======
+=======
+>>>>>>> refs/remotes/origin/master
 app.css.append_css({
     'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
 })
 
 @app.callback(Output('1', 'children'), 
+<<<<<<< HEAD
+>>>>>>> refs/remotes/origin/master
+=======
 >>>>>>> refs/remotes/origin/master
               [Input('stats', 'value')])                           
 def pe_ratio(value):
@@ -217,6 +240,7 @@ def pe_ratio(value):
     test = companies[companies['symbol'] == value]
     asking = value.upper()
 <<<<<<< HEAD
+<<<<<<< HEAD
     sector = test.iloc[0][2]
     company = test['company'].iloc[0]
     labels_gv = ['Growth', 'Value']
@@ -224,12 +248,17 @@ def pe_ratio(value):
     data= [go.Pie(labels=labels_gv, values=values_gv, hole=.3, 
                 name= f'{asking}', hoverinfo="label+percent+name")]
 =======
+=======
+>>>>>>> refs/remotes/origin/master
     company = test['company'].values[0]
     sector = test['sector'].values[0]
     labels_gv = ['Growth', 'Value']
     values_gv = test['growth'].value_counts()
     data= [go.Pie(labels=labels_gv, values=values_gv, hole=.3, 
                   name= f'{asking}', hoverinfo="label+percent+name")]
+<<<<<<< HEAD
+>>>>>>> refs/remotes/origin/master
+=======
 >>>>>>> refs/remotes/origin/master
 
     labels_roa = ['Growth', 'No Growth']
@@ -241,6 +270,7 @@ def pe_ratio(value):
     values_roe = test['growth_roe'].value_counts()
     data_2 = [go.Pie(labels=labels_roe, values=values_roe, hole=.3, name= f'{asking}')]
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     return html.Div([
@@ -270,6 +300,8 @@ def pe_ratio(value):
                                                 )})],className="six columns", style={'max-width': '500px'}),
                                                 ],style={'display': 'flex', 'justify-content': 'center'})
 =======
+=======
+>>>>>>> refs/remotes/origin/master
     return html.Div([
                 html.Div([
                     html.H2(f'{company}'),
@@ -296,6 +328,9 @@ def pe_ratio(value):
                                                 legend=dict(x=0,y=1.0),
                                                 )})],className="six columns"),
                                                 ],style={'width': '49%', 'display': 'inline-block'})
+<<<<<<< HEAD
+>>>>>>> refs/remotes/origin/master
+=======
 >>>>>>> refs/remotes/origin/master
                 
 
