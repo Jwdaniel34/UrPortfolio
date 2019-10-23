@@ -34,17 +34,27 @@ stocks_df['Date'] = pd.to_datetime(stocks_df.Date, infer_datetime_format=True)
 app.layout = html.Div([
                 # Configure navbar menu
         html.Div([
-                html.H2(children = 'UrStockPortfolio'),
+                html.H2(children = 'StockUp - A Fundamental Stock application For New Investors'),
                 ], className = "banner"),
 
     dcc.Link('Investors Page', href='http://localhost:8501/'),
+    dcc.Link(' | Recommender Page', href = 'http://localhost:8502'),
     # content will be rendered in this element
     html.Div(id='page-content'),
 
-        html.H3('A Fundamental Stock application For New Investors'),
-
+        html.Hr(),
+        html.Div([
+            html.H3('Technical Analysis'),
+            html.H4('''   
+       The technical analysis of stocks and trends attempts to predict future price movements,
+         providing traders with the information needed to make a profit.Most technical analysis is focused 
+         on determining whether or not a current trend will continue
+          and, if not, when it will reverse.
+            '''),
+        ],style={'width': '49%', 'display': 'inline-block'}),
+        
         html.Div(
-            [html.H1("Compare individual Stocks Prices", style={'textAlign': 'center'}),
+            [html.H1("Compare Stocks Prices", style={'textAlign': 'center'}),
             dcc.Dropdown(id='my-dropdown',options= [{'label': i, 'value': j} for i,j in zip(comp,symbols)],
                 multi=True,value=['A'],style={"display": "block","margin-left": "auto","margin-right": "auto","width": "40"}),
                 dcc.Graph(id='my-graph')
@@ -52,15 +62,15 @@ app.layout = html.Div([
             
         html.Hr(),
         html.Div([
-            html.H4('''
-            What Is a Sector?\n
+            html.H3('What Is a Sector?'),
+            html.H4('''   
             A sector is an area of the economy in which businesses share the
             same or a related product or service. It can also be thought of as an
             industry or market that shares common operating characteristics. 
             Dividing an economy into different sectors allows for
             more in-depth analysis of the economy as a whole.
-            ''')
-        ]),
+            '''),
+        ],style={'width': '49%', 'display': 'inline-block'}),
         html.Div([
          html.Div([
                     dcc.Graph(
@@ -83,7 +93,14 @@ app.layout = html.Div([
                                     ],style={'display': 'flex', 'justify-content': 'space-evenly'}),
                 
                         html.Hr(),
-
+                            html.Div([
+                                html.H3('Analyze the Company'),
+                                html.H4('''   
+                                Fundamental analysis is the process of looking at a business at the most basic or fundamental financial level. 
+                                This type of analysis examines the key ratios of a business to determine its financial health.
+                                 Fundamental analysis can also give you an idea of the value of what a company's stock should be.
+                                '''),
+                            ],style={'width': '49%', 'display': 'inline-block'}),
                     html.Div([
                         dcc.Dropdown(
                                     id = 'stats', placeholder= 'Select a stock',

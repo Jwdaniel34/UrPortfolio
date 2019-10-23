@@ -100,7 +100,8 @@ def simulator(portfolio, time_horizon):
     p_tiles = np.percentile(ending_values,[5,10,15])
     for p in range(len(p_tiles)):
         l = [5,10,15]
-        st.write("{}%-ile:  ".format(l[p]).rjust(15),"{}".format(locale.currency(p_tiles[p], grouping=True)))
+        st.subheader('Possible Return Each Year')
+        st.write("{}%-percentile:  ".format(l[p]).rjust(15),"{}".format(locale.currency(p_tiles[p], grouping=True)))
     
     random_x = sim.index
     random_y0 = sim[1]
@@ -163,7 +164,7 @@ def processing_recommender(portfolio, cluster_rec):
 image = Image.open('stocks_icons.png')
 st.image(image, caption='', use_column_width=False)
 
-st.title('Investors Portfolio - Welcome to UrPortfolio')
+st.title('Investors Portfolio - Welcome to StockUp')
 
 
 st.subheader('How long would you like to invest for?')
@@ -185,5 +186,7 @@ elif risk_tolerance == 'Risky':
 else:
    st.write("You didn't select a risk tolerance.")
 
+
 st.subheader("Recommended Stocks Based on Selection")
 st.write(processing_recommender(risk,cluster_rec))
+rec_portfolio = processing_recommender(risk, cluster_rec)
