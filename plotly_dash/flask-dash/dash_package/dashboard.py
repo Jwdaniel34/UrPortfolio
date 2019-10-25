@@ -28,7 +28,7 @@ values = companies['sector'].value_counts(normalize = False)
 stocks_df = pd.read_csv('/Users/flatironschool/UrPortfolio/dash_setup/dash_timeseries.csv')
 stocks_df = stocks_df.drop('Unnamed: 0', axis = 1)
 stocks_df['Date'] = pd.to_datetime(stocks_df.Date, infer_datetime_format=True)
-# stocks_df['year'] = pd.DatetimeIndex(stocks_df['date']).year
+predictions = pd.read_csv('/Users/flatironschool/UrPortfolio/recommendation_system/rec_csvs/prediction_gv.csv')
 
 
 app.layout = html.Div([
@@ -109,7 +109,17 @@ app.layout = html.Div([
                                 html.Div(id='1'),
                                 html.Div(id='2'),
                                     ]),
-                                                              
+                    # html.H1("Food Product Exports in the United States", style={"textAlign": "center"}),
+                    # html.Div([html.Div([dcc.Dropdown(id='stock-selected1',
+                    #                                  options=[{'label': i, 'value': j} for i,j in zip(comp,symbols)],
+                    #                                  value="A")], className="six columns",
+                    #                    style={"width": "40%", "float": "right"}),
+                    #           html.Div([dcc.Dropdown(id='report-earnings2',
+                    #                                  options=[{'label': 'Price', 'value': 'Price'}, {'label': 'Earnings', 'value': 'Earnings'},
+                                                #               {'label': 'Dividend payout ratio', 'value': 'Dividend payout ratio'}],
+                    #                                  value='Earnings')], className="six columns", style={"width": "40%", "float": "left"}),
+                    #           ], className="row", style={"padding": 50, "width": "60%", "margin-left": "auto", "margin-right": "auto"}),
+                    # dcc.Graph(id='new-graph'),                 
        
 ])
 
@@ -170,10 +180,21 @@ def company(value):
     asking = value.upper()
     sector = test['sector'].iloc[0]
     company = test['company'].iloc[0]
+    prede = predictions[predictions['symbol'] == value]
+    growth = prede['Growth'].sum()
+    value = prede['Value'].sum()
+    if growth > value:
+        types = 'Growth'
+        defin = "A growth stock is a stock of a company that generates substantial and sustainable positive cash flow and whose revenues and earnings are expected to increase at a faster rate than the average company within the same industry"
+    else:
+        types = 'Value'
+        defin = 'A value stock is a stock that trades at a lower price relative to its fundamentals, such as dividends, earnings, or sales, making it appealing to value investors.'
     return html.Div([
-                html.H2(f'{company}'),
-                html.H3(f'{sector}')
-                ])
+                html.H1(f'Company - {company} ({asking})'),
+                html.H2(f'Sector - {sector}'),
+                html.H3(f'{asking} is considered a {types} stock'),
+                html.H4(f'Definition : {defin}')
+                ],style={'width': '49%', 'display': 'inline-block'})
 
 @app.callback(Output('2', 'children'), 
               [Input('stats', 'value')])                           
@@ -231,6 +252,28 @@ def pe_ratio(value):
                                                 
                                                 )})],className="six columns", style={'max-width': '500px'}),
                                                 ],style={'display': 'flex', 'justify-content': 'center'})
+
+# @app.callback(
+#     dash.dependencies.Output('new-graph', 'figure'),
+#     [dash.dependencies.Input('stock-selected1', 'value'),
+#      dash.dependencies.Input('report-earnings2', 'value')])
+# def update_graph(stock_selected1, report_earnings):
+    # sectors_dyr = pd.DataFrame(companies.groupby(['sector','symbol','date','company'])[report_earnings].sum())
+    # sectors_dyr = sectors_dyr.reset_index()
+    # sectors_dyr.date = pd.to_datetime(sectors_dyr.date)
+    # sectors_dyr.set_index("date", inplace=True)
+    # symbol_1 = sectors_dyr[sectors_dyr['symbol'] == stock_selected1]
+    # symbol_2 = sectors_dyr[sectors_dyr['symbol'] == stocks_selected2]
+
+    # company_1 = symbol_1['company'].values[0]
+    # company_2 = symbol_2['company'].values[0]
+    # trace1 = []
+    # for stock in stock_selected1:
+    #     trace1.append(go.Scatter(x=stocks_df[stocks_df["stock"] == stock]["Date"],y=stocks_df[stocks_df["stock"] == stock]["Open"],mode='lines',
+    #         opacity=0.7,name=f'Open {stock}',textposition='bottom center'))
+    # trace2.append(go.Scatter(x = symbol_1.index, y = symbol_1[report_earnings], mode = 'lines+markers', name = f'{stock_selected1}'))
+    # trace3.append(go.Scatter(x = symbol_2.index, y = symbol_2[report_earnings], mode = 'lines+markers', name = f'{stock_selected2}'))
+
 
 @app.callback(dash.dependencies.Output('page-content', 'children'),
               [dash.dependencies.Input('url', 'pathname')])

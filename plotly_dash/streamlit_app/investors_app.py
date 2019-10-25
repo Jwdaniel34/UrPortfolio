@@ -156,7 +156,7 @@ def processing_recommender(portfolio, cluster_rec):
     scores = pd.DataFrame(scores.sort_values())
     recommend_err = scores.merge(cluster_rec, left_index = True, right_index = True)
     recommend_err = recommend_err.rename({0: 'RMSE'}, axis = 1)
-    recommend_err = recommend_err.drop(columns = 'RMSE', axis = 1)
+    # recommend_err = recommend_err.drop(columns = ['RMSE','avg_yr_returns', 'yr_variance', 'cluster'], axis = 1)
     testing = recommend_err.head(10)
     return testing
 
@@ -173,14 +173,14 @@ st.write('Years Investing:', time_horizon)
 
 st.subheader("What's your risk tolerance")
 risk_tolerance = st.radio( "Risk tolerance level",  
-                ('Conservative', 'Moderate', 'Risky'))
+                ('Conservative', 'Moderate', 'Aggressive'))
 if risk_tolerance == 'Conservative':
     risk = conservative()
     st.write(simulator(risk,time_horizon))
 elif risk_tolerance == 'Moderate': 
     risk = moderate()
     st.write(simulator(risk,time_horizon))
-elif risk_tolerance == 'Risky':   
+elif risk_tolerance == 'Aggressive':   
     risk = risky()
     st.write(simulator(risk,time_horizon))
 else:

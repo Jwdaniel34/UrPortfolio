@@ -31,7 +31,7 @@ def recommender_system(risks, prices):
     scores = pd.DataFrame(scores.sort_values())
     recommend_err = scores.merge(rec_comp_main, left_index = True, right_index = True)
     recommend_err = recommend_err.rename({0: 'RMSE'}, axis = 1)
-    recommend_err = recommend_err.drop(columns = 'RMSE', axis = 1)
+    recommend_err = recommend_err.drop(columns = ['RMSE', 'cluster'], axis = 1)
     testing = recommend_err.head(10)
     return testing
 
@@ -100,19 +100,19 @@ def simulator(portfolio, time_horizon):
 image = Image.open('stocks_icons.png')
 st.image(image, caption='', use_column_width=False)
 
-st.title('Recommender Portfolio - Welcome to StockUp Best Stock Recommender for You')
+st.title('Welcome to StockUp - Best Stock Recommender for You')
 
 st.subheader('How long would you like to invest for?')
 time_horizon = st.slider(label= '', min_value = 2, max_value = 20, value = 2,step = 1)
 st.write('Years Investing:', time_horizon)
 
-st.subheader("How Much are you willing to spend on stocks?")
+st.subheader("How Much are you willing to spend on one stock?")
 prices = st.slider(label= '', min_value = 20, max_value = 200, value = 20,step = 1)
 
 
 st.subheader("What's your risk tolerance?")
 risk_tolerance = st.radio( "Risk tolerance level",  
-                ('Conservative', 'Moderate', 'Risky'))
+                ('Conservative', 'Moderate', 'Aggressive'))
 if risk_tolerance == 'Conservative':
     risk = .35
     recommender = recommender_system(risk,prices)
@@ -121,7 +121,7 @@ elif risk_tolerance == 'Moderate':
     risk = .50
     recommender = recommender_system(risk,prices)
     st.write(simulator(recommender,time_horizon))
-elif risk_tolerance == 'Risky':   
+elif risk_tolerance == 'Aggressive':   
     risk = .70
     recommender = recommender_system(risk,prices)
     st.write(simulator(recommender, time_horizon))
@@ -129,7 +129,7 @@ else:
    st.write("You didn't select a risk tolerance.")
 
 st.subheader("Recommended Stocks Based on Selection")
-st.write(recommender)
+st.write(recommender[['company','sector','Price']])
 
 
 
