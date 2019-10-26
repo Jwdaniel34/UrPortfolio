@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from PIL import Image
-from functions import *
+from streamfunc import *
 import locale
 locale.setlocale(locale.LC_ALL, 'en_CA.UTF-8')
 
@@ -139,7 +139,7 @@ def processing_recommender(portfolio, cluster_rec):
     cluster = portfolio
     cluster = cluster[cluster['sharpe_ratio'] >= 0]
     cluster = cluster.sort_values('sharpe_ratio', ascending = True)
-    rec_test = cluster_rec.drop(columns = ['symbol','company','Price','sector'])
+    rec_test = cluster_rec.drop(columns = ['symbol','company','sector'])
     rec_clust = portfolio.drop(columns = ['symbol','company','sector'])
     pip = rec_clust.sort_values('avg_yr_returns', ascending=False)
     pip = pip.index[0]
@@ -188,5 +188,5 @@ else:
 
 
 st.subheader("Recommended Stocks Based on Selection")
-st.write(processing_recommender(risk,cluster_rec))
 rec_portfolio = processing_recommender(risk, cluster_rec)
+st.write(rec_portfolio[['symbol','company','sector','Price']])

@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from PIL import Image
-from functions import *
+from streamfunc import *
 import locale
 locale.setlocale(locale.LC_ALL, 'en_CA.UTF-8')
 
@@ -107,7 +107,7 @@ time_horizon = st.slider(label= '', min_value = 2, max_value = 20, value = 2,ste
 st.write('Years Investing:', time_horizon)
 
 st.subheader("How Much are you willing to spend on one stock?")
-prices = st.slider(label= '', min_value = 20, max_value = 200, value = 20,step = 1)
+prices = st.slider(label= '', min_value = 20, max_value = 1000, value = 20,step = 1)
 
 
 st.subheader("What's your risk tolerance?")
@@ -129,7 +129,7 @@ else:
    st.write("You didn't select a risk tolerance.")
 
 st.subheader("Recommended Stocks Based on Selection")
-st.write(recommender[['company','sector','Price']])
+st.write(recommender[['symbol','company','sector','Price']])
 
 
 

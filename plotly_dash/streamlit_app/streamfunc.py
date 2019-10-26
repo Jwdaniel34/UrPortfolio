@@ -17,6 +17,8 @@ import locale
 locale.setlocale(locale.LC_ALL, 'en_CA.UTF-8')
 style.use('ggplot')
 
+
+
 cluster_rec = pd.read_csv('/Users/flatironschool/UrPortfolio/recommendation_system/rec_csvs/clusters_rec.csv')
 growth_stocks = pd.read_csv('/Users/flatironschool/UrPortfolio/recommendation_system/rec_csvs/growth_stocks.csv')
 value_stocks = pd.read_csv('/Users/flatironschool/UrPortfolio/recommendation_system/rec_csvs/value_stocks.csv')
@@ -24,6 +26,7 @@ predictions = pd.read_csv('/Users/flatironschool/UrPortfolio/recommendation_syst
 growth_stocks = growth_stocks.rename({'0':'symbol'}, axis = 1)
 value_stocks = value_stocks.rename({'0':'symbol'}, axis = 1)
 cluster_rec = cluster_rec.drop(columns= 'Unnamed: 0')
+cluster_rec = cluster_rec.drop_duplicates(subset=None, keep='first', inplace=False)
 matching = cluster_rec.set_index('symbol')
 value_choices = value_stocks.set_index('symbol')
 value_choices = value_choices.merge(matching, right_index = True, left_index = True)
@@ -46,4 +49,3 @@ risky_growth_stocks = growth_choices[(growth_choices['yr_variance'] <= 1.) & (gr
 top_20_conservative_growth = conservative_growth_stocks.sort_values('avg_yr_returns', ascending = False).head(20)
 top_20_moderate_growth = moderate_growth_stocks.sort_values('avg_yr_returns', ascending = False).head(20)
 top_20_risky_growth = risky_growth_stocks.sort_values('avg_yr_returns', ascending = False).head(20)
-
